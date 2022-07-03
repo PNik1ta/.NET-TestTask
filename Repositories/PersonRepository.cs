@@ -25,8 +25,6 @@ public class PersonRepository : IPersonRepository
 
 		if (IsGetAllRequestEmpty.IsAll(getAllRequest))
 		{
-			System.Console.WriteLine(getAllRequest.LastName);
-			System.Console.WriteLine(getAllRequest.LastName == string.Empty);
 			people = this._dbContext.People.Where(p =>
 				p.Address.City == getAllRequest.City &&
 				p.FirstName == getAllRequest.FirstName &&

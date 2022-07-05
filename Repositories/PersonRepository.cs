@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 /// <summary>
@@ -78,7 +77,7 @@ public class PersonRepository : IPersonRepository
 			person.Address = await this._dbContext.Addresses.SingleOrDefaultAsync(a => a.Id == person.AddressId);
 		}
 
-		string json = PersonJSONConverter.Serialize(people);
+		string json = ObjectJSONConverter<Person>.SerializeObject(people);
 
 		return json;
 
@@ -91,7 +90,7 @@ public class PersonRepository : IPersonRepository
 	/// <returns>User Id</returns>
 	public async Task<long> Save(string json)
 	{
-		Person person = PersonJSONConverter.DeserializePerson(json);
+		Person person = ObjectJSONConverter<Person>.DeserializeObject(json);
 
 		if (person == null)
 		{
@@ -101,7 +100,5 @@ public class PersonRepository : IPersonRepository
 		await this._dbContext.AddAsync(person);
 		await this._dbContext.SaveChangesAsync();
 		return person.Id;
-
-
 	}
 }

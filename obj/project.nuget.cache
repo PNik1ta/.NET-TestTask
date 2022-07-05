@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qFaKe5YgZ5uAcIa+wLgXxS87i8uIkl+e7Uq5mzorpU3tSh1XjNte8hRTioSI4XD6HHpoolSCZag8Uw2Tm5tJ3Q==",
+  "dgSpecHash": "wRN6GKYNjc3mEGBxiQicIl+zjlDbgx3hZw/NLfBI0LBj+FN1qQAJKzv8UnriVnuTYzLWcK8+A7zS22SB6Oj52A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\nikit\\OneDrive\\Desktop\\Test task\\TestTaskAPI\\TestTaskAPI.csproj",
+  "projectFilePath": "C:\\Users\\nikit\\OneDrive\\Desktop\\.NET-TestTask\\TestTaskAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\nikit\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\nikit\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",

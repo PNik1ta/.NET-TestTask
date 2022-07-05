@@ -9,4 +9,11 @@ public static class StringHelper
 	{
 		return Regex.Replace(str, @"\s+", "");
 	}
+
+	public static string FindStringBetweenTwoStrings(string str, string from, string to)
+	{
+		int pFrom = str.IndexOf(from) + from.Length;
+		int pTo = str.LastIndexOf(to);
+		return str.Substring(pFrom, pTo - pFrom);
+	}
 }

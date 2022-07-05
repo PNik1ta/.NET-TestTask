@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Configuration;
 /// <summary>
 /// This class uses for setting connection to database
 /// </summary>
@@ -9,7 +9,19 @@ public class Context : DbContext
 	/// <summary>
 	/// Change this connection string to your own local db
 	/// </summary>
-	public const string CONNECTION_STRING = @"Server=NIKITA\MSSQLSERVER01;Database=PeopleDB;Trusted_Connection=True;";
+	private readonly IConfiguration _configuration;
+	public string CONNECTION_STRING = String.Empty;
+
+	public Context(IConfiguration configuration)
+	{
+		CONNECTION_STRING = _configuration.GetConnectionString("DefaultConnection");
+	}
+
+	public Context()
+	{
+
+	}
+
 	public DbSet<Address> Addresses { get; set; }
 	public DbSet<Person> People { get; set; }
 

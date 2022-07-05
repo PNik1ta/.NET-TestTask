@@ -2066,11 +2066,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\nikit\\OneDrive\\Desktop\\Test task\\TestTaskAPI\\TestTaskAPI.csproj",
+      "projectUniqueName": "C:\\Users\\nikit\\OneDrive\\Desktop\\.NET-TestTask\\TestTaskAPI.csproj",
       "projectName": "TestTaskAPI",
-      "projectPath": "C:\\Users\\nikit\\OneDrive\\Desktop\\Test task\\TestTaskAPI\\TestTaskAPI.csproj",
+      "projectPath": "C:\\Users\\nikit\\OneDrive\\Desktop\\.NET-TestTask\\TestTaskAPI.csproj",
       "packagesPath": "C:\\Users\\nikit\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\nikit\\OneDrive\\Desktop\\Test task\\TestTaskAPI\\obj\\",
+      "outputPath": "C:\\Users\\nikit\\OneDrive\\Desktop\\.NET-TestTask\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\nikit\\AppData\\Roaming\\NuGet\\NuGet.Config",

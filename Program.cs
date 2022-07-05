@@ -7,7 +7,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // OPTIONS
-builder.Services.Configure<Context>(builder.Configuration.GetSection(Context.CONNECTION_STRING));
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.Configure<Context>(op => op.CONNECTION_STRING = connectionString);
 
 // REPOSITORIES
 builder.Services.AddSingleton<IPersonRepository, PersonRepository>();

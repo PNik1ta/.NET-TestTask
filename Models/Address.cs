@@ -10,6 +10,12 @@ public class Address
 		this.AddressLine = addressLine;
 	}
 
+	public Address()
+	{
+		this.City = String.Empty;
+		this.AddressLine = String.Empty;
+	}
+
 	[Column("Id")]
 	[Key]
 	public long Id { get; set; }

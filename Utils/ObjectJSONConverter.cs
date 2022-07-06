@@ -5,84 +5,59 @@ using System.Text.Json.Serialization;
 /// <summary>
 /// Custom JSON Serializer for Person model
 /// </summary>
-public static class ObjectJSONConverter<T> where T : class
+public class ObjectJSONConverter
 {
 
 	/// <summary>
 	/// Convert JSON to instance of a class
 	/// </summary>
-	public static T DeserializeObject(string json)
+	public T DeserializeObject<T>(string json)
 	{
 		T instance = Activator.CreateInstance<T>();
-
-		List<string> values = new List<string>();
-		List<string> keys = new List<string>();
-
-		json = json.Replace("}", String.Empty);
+		json = json.Substring(1, json.Length - 2);
 		json = StringHelper.RemoveAllSpaces(json);
-
-		string[] objects = json.Split('{');
 		string[] keyValues = { };
-		string lastKey = String.Empty;
-
-		foreach (string obj in objects)
+		List<string> keys = new List<string>();
+		List<string> values = new List<string>();
+		List<string> nestedObjects = new List<string>();
+		while (json.Contains("{"))
 		{
+			string nestedObj = json.Substring(json.IndexOf("{"), json.IndexOf("}") - json.IndexOf("{") + 1);
+			nestedObjects.Add(nestedObj);
+			json = json.Remove(json.IndexOf("{"), json.IndexOf("}") - json.IndexOf("{") + 1);
+		}
+		keyValues = json.Split(',');
 
-			keyValues = obj.Split(",");
-
-
-			if (obj != objects[1] && obj != objects[0])
-			{
-				object nestedInstance = new object();
-				string className = char.ToUpper(lastKey[0]) + lastKey.Substring(1);
-				Type type = Type.GetType(className);
-				if (type != null)
-				{
-					nestedInstance = Activator.CreateInstance(type);
-					int index = 0;
-					foreach (var prop in nestedInstance.GetType().GetProperties())
-					{
-						if (prop.Name == "Id")
-						{
-							continue;
-						}
-						prop.SetValue(nestedInstance, keyValues[index].Split(":")[1].Trim(new Char[] { '\u2019', '\u2018', '\'' }));
-						++index;
-					}
-
-					// Assign nested object to last property
-					instance.GetType().GetProperties()[instance.GetType().GetProperties().Count() - 1].SetValue(instance, nestedInstance);
-				}
-			}
-
-			//Get key before nested object
-			lastKey = keyValues[keyValues.Length - 1].Split(':')[0].Trim(new Char[] { '\u2019', '\u2018', '\'', '"' });
-
-			foreach (var keyValue in keyValues)
-			{
-				if (!keyValue.Contains(":") || keyValue.Split(":")[1] == String.Empty)
-				{
-					continue;
-				}
-
-				// This characters are present in test task file.
-				string value = keyValue.Split(":")[1].Trim(new Char[] { '\u2019', '\u2018', '\'' });
-				string key = keyValue.Split(':')[0].Trim(new Char[] { '\u2019', '\u2018', '\'', '"' });
-				keys.Add(key);
-				values.Add(value);
-			}
+		foreach (var keyValue in keyValues)
+		{
+			keys.Add(keyValue.Split(':')[0].Trim(new Char[] { '\u2019', '\u2018', '\'', '"' }));
+			values.Add(keyValue.Split(':')[1].Trim(new Char[] { '\u2019', '\u2018', '\'' }));
 		}
 
+		int index = 0;
 		for (int i = 0; i < keys.Count; i++)
 		{
 			foreach (var prop in instance.GetType().GetProperties())
 			{
 				if (prop.Name.ToLower() == keys[i].ToLower())
 				{
-					prop.SetValue(instance, values[i]);
+					if (prop.PropertyType.IsClass && prop.PropertyType != Type.GetType("System.String"))
+					{
+						Type type = TypeHelper.GetTypeByName(prop.Name);
+						var deserializeMethod = typeof(ObjectJSONConverter).GetMethod("DeserializeObject");
+						var methodRef = deserializeMethod.MakeGenericMethod(type);
+						prop.SetValue(instance, methodRef.Invoke(new ObjectJSONConverter(), new object[] { nestedObjects[index] }));
+						++index;
+					}
+					else
+					{
+						prop.SetValue(instance, values[i]);
+					}
 				}
 			}
 		}
+
+
 		return instance;
 	}
 
@@ -90,7 +65,7 @@ public static class ObjectJSONConverter<T> where T : class
 	/// <summary>
 	/// Convert list of objects into JSON
 	/// </summary>
-	public static string SerializeObject(List<T> objects)
+	public string SerializeObject<T>(List<T> objects)
 	{
 		string json = "[";
 

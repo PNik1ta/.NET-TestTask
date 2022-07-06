@@ -77,7 +77,8 @@ public class PersonRepository : IPersonRepository
 			person.Address = await this._dbContext.Addresses.SingleOrDefaultAsync(a => a.Id == person.AddressId);
 		}
 
-		string json = ObjectJSONConverter<Person>.SerializeObject(people);
+		ObjectJSONConverter jsonConverter = new ObjectJSONConverter();
+		string json = jsonConverter.SerializeObject<Person>(people);
 
 		return json;
 
@@ -90,7 +91,8 @@ public class PersonRepository : IPersonRepository
 	/// <returns>User Id</returns>
 	public async Task<long> Save(string json)
 	{
-		Person person = ObjectJSONConverter<Person>.DeserializeObject(json);
+		ObjectJSONConverter jsonConverter = new ObjectJSONConverter();
+		Person person = jsonConverter.DeserializeObject<Person>(json);
 
 		if (person == null)
 		{
